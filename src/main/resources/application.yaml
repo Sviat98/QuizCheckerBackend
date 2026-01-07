@@ -1,0 +1,13 @@
+ktor:
+  deployment:
+    port: 8080
+    host: 0.0.0.0
+  application:
+    modules:
+      - com.bashkevich.quizcheckerbackend.ApplicationKt.module
+
+storage:
+  driverClassName: "org.postgresql.Driver"
+  jdbcURL: "jdbc:postgresql://localhost:5432/quizchecker?user=postgres&password=postgres"
+  user: "postgres"
+  password: "postgres"
