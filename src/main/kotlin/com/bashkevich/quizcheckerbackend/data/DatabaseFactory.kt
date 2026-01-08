@@ -3,7 +3,6 @@ package com.bashkevich.quizcheckerbackend.data
 import com.bashkevich.quizcheckerbackend.data.models.user.UsersTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import io.ktor.server.config.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.v1.jdbc.Database
@@ -13,16 +12,20 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 object DatabaseFactory {
 
-    fun init(config: ApplicationConfig) {
-        val driverClassName = config.property("storage.driverClassName").getString()
-        val jdbcURL = config.property("storage.jdbcURL").getString()
-        val user = config.property("storage.user").getString()
-        val password = config.property("storage.password").getString()
+    private const val DRIVER_CLASS_NAME = "org.postgresql.Driver"
+
+    fun init() {
+        val jdbcURL = System.getenv("DB_JDBC_URL")
+            ?: throw IllegalStateException("DB_JDBC_URL environment variable is not set")
+        val user = System.getenv("DB_USER")
+            ?: throw IllegalStateException("DB_USER environment variable is not set")
+        val password = System.getenv("DB_PASSWORD")
+            ?: throw IllegalStateException("DB_PASSWORD environment variable is not set")
 
         val database = Database.connect(
             createHikariDataSource(
                 url = jdbcURL,
-                driver = driverClassName,
+                driver = DRIVER_CLASS_NAME,
                 user = user,
                 password = password
             )

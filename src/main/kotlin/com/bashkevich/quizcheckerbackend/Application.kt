@@ -12,7 +12,7 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
     // Initialize database
-    DatabaseFactory.init(environment.config)
+    DatabaseFactory.init()
 
     // Configure plugins
     configureDependencyInjection()
