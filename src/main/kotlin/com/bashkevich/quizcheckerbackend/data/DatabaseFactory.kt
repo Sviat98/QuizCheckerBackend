@@ -53,9 +53,6 @@ object DatabaseFactory {
         return HikariDataSource(hikariConfig)
     }
 
-    /**
-     * Helper function to execute database queries in a suspended transaction.
-     */
     suspend fun <T> dbQuery(block: suspend () -> T): T =
         withContext(Dispatchers.IO) {
             suspendTransaction { block() }

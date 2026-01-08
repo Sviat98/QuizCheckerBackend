@@ -23,3 +23,12 @@ data class UpdateUserRequest(
     val name: String? = null,
     val email: String? = null
 )
+
+/**
+ * Extension function to convert UserEntity to UserDto
+ */
+fun UserEntity.toDto(): UserDto = UserDto(
+    id = this.id.value,
+    name = this.name,
+    email = this.email
+)
