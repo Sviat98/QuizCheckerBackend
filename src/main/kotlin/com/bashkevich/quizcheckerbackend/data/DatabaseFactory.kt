@@ -1,19 +1,16 @@
 package com.bashkevich.quizcheckerbackend.data
 
-import com.bashkevich.quizcheckerbackend.data.models.Users
+import com.bashkevich.quizcheckerbackend.data.models.user.UsersTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.config.*
 import kotlinx.coroutines.Dispatchers
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.jetbrains.exposed.sql.transactions.transaction
+import kotlinx.coroutines.withContext
+import org.jetbrains.exposed.v1.jdbc.Database
+import org.jetbrains.exposed.v1.jdbc.SchemaUtils
+import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
-/**
- * Database factory for initializing and managing database connections.
- * Uses HikariCP for connection pooling and Exposed for ORM.
- */
 object DatabaseFactory {
 
     fun init(config: ApplicationConfig) {
@@ -33,7 +30,7 @@ object DatabaseFactory {
 
         // Create tables if they don't exist
         transaction(database) {
-            SchemaUtils.create(Users)
+            SchemaUtils.create(UsersTable)
         }
     }
 
@@ -60,5 +57,7 @@ object DatabaseFactory {
      * Helper function to execute database queries in a suspended transaction.
      */
     suspend fun <T> dbQuery(block: suspend () -> T): T =
-        newSuspendedTransaction(Dispatchers.IO) { block() }
+        withContext(Dispatchers.IO) {
+            suspendTransaction { block() }
+        }
 }

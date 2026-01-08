@@ -1,11 +1,11 @@
 [versions]
-kotlin = "1.9.22"
-ktor = "2.3.7"
-koin = "3.5.3"
-logback = "1.4.14"
-exposed = "0.46.0"
-hikaricp = "5.1.0"
-postgresql = "42.7.1"
+kotlin = "2.3.0"
+ktor = "3.3.3"
+koin = "4.1.1"
+logback = "1.5.24"
+exposed = "1.0.0-rc-3"
+hikaricp = "7.0.2"
+postgresql = "42.7.8"
 
 [libraries]
 # Ktor Server
@@ -36,8 +36,8 @@ postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" 
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
 # Testing
-ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor" }
-kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+ktor-server-tests = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

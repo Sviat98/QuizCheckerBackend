@@ -1,4 +1,4 @@
-package com.bashkevich.quizcheckerbackend.di
+ package com.bashkevich.quizcheckerbackend.di
 
 import com.bashkevich.quizcheckerbackend.data.repositories.UserRepository
 import com.bashkevich.quizcheckerbackend.data.repositories.UserRepositoryImpl

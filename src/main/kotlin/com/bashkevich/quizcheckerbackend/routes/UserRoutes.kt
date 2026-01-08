@@ -10,10 +10,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
 
-/**
- * User-related API routes.
- * Provides CRUD operations for User entities.
- */
 fun Route.userRoutes() {
     val userService by inject<UserService>()
 

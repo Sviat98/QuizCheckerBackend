@@ -4,7 +4,9 @@
       "Bash(mkdir:*)",
       "Bash(gradlew.bat:*)",
       "Bash(./gradlew.bat --refresh-dependencies build --no-daemon)",
-      "Bash(./gradlew.bat build:*)"
+      "Bash(./gradlew.bat build:*)",
+      "WebSearch",
+      "Bash(./gradlew.bat clean build:*)"
     ]
   },
   "enabledMcpjsonServers": [

@@ -5,10 +5,6 @@ import com.bashkevich.quizcheckerbackend.data.models.UpdateUserRequest
 import com.bashkevich.quizcheckerbackend.data.models.User
 import com.bashkevich.quizcheckerbackend.data.repositories.UserRepository
 
-/**
- * Service layer for User business logic.
- * Handles operations between the API layer and the data layer.
- */
 class UserService(private val userRepository: UserRepository) {
 
     suspend fun getAllUsers(): List<User> {
