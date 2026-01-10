@@ -48,6 +48,9 @@ dependencies {
 
     // Koog AI Agent
     implementation(libs.koog.ktor)
+    implementation(libs.koog.agents)
+    implementation(libs.koog.prompt.llm)
+    implementation(libs.koog.prompt.structure)
 
     // Testing
     testImplementation(libs.ktor.server.tests)

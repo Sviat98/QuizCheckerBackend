@@ -7,6 +7,7 @@ import ai.koog.agents.core.tools.reflect.tools
 import ai.koog.ktor.Koog
 import ai.koog.prompt.llm.LLMProvider
 import ai.koog.prompt.executor.clients.openai.OpenAIModels
+import com.bashkevich.quizcheckerbackend.routes.QuestionResponse
 import io.ktor.server.application.*
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
@@ -66,7 +67,7 @@ class QuizHelperTools : ToolSet {
     @LLMDescription("Generate a sample quiz question for a given category")
     fun generateQuizQuestion(
         @LLMDescription("The category for the quiz question") category: String
-    ): String {
+    ): QuestionResponse {
         val questions = mapOf(
             "Science" to "What is the chemical symbol for water?",
             "History" to "In what year did World War II end?",
@@ -77,6 +78,8 @@ class QuizHelperTools : ToolSet {
             "Sports" to "How many players are on a soccer team?",
             "Entertainment" to "What is the highest-grossing film of all time?"
         )
-        return questions[category] ?: "What is your favorite subject?"
+
+        val question = questions[category] ?: "What is your favorite subject?"
+        return QuestionResponse(question)
     }
 }
