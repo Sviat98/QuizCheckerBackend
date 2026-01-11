@@ -12,25 +12,42 @@ import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ChatRequest(val message: String)
+data class ChatRequest(
+    @SerialName("message")
+    val message: String
+)
 
 @Serializable
-data class ChatResponse(val response: String)
+data class ChatResponse(
+    @SerialName("response")
+    val response: String
+)
 
 @Serializable
-data class AgentRequest(val prompt: String)
+data class AgentRequest(
+    @SerialName("prompt")
+    val prompt: String
+)
 
 @Serializable
-data class AgentResponse(val output: String)
+data class AgentResponse(
+    @SerialName("output")
+    val output: String
+)
 
 @Serializable
-data class CategoryRequest(val category: String)
+data class CategoryRequest(
+    @SerialName("category")
+    val category: String
+)
 
 @Serializable
 data class QuestionResponse(
+    @SerialName("question")
     @property:LLMDescription("The generated quiz question text")
     val question: String
 )

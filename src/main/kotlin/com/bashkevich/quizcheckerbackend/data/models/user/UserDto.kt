@@ -1,17 +1,23 @@
 package com.bashkevich.quizcheckerbackend.data.models.user
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserDto(
+    @SerialName("id")
     val id: Int? = null,
+    @SerialName("name")
     val name: String,
+    @SerialName("email")
     val email: String
 )
 
 @Serializable
 data class CreateUserRequest(
+    @SerialName("name")
     val name: String,
+    @SerialName("email")
     val email: String
 )
 
@@ -20,7 +26,9 @@ data class CreateUserRequest(
  */
 @Serializable
 data class UpdateUserRequest(
+    @SerialName("name")
     val name: String? = null,
+    @SerialName("email")
     val email: String? = null
 )
 
