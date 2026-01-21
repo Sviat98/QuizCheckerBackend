@@ -6,6 +6,7 @@ import ai.koog.prompt.executor.clients.openai.OpenAIModels
 import ai.koog.prompt.structure.executeStructured
 import com.bashkevich.quizcheckerbackend.data.models.blanktemplate.AnswerTemplateRequest
 import com.bashkevich.quizcheckerbackend.data.models.blanktemplate.BlankTemplateRequest
+import com.bashkevich.quizcheckerbackend.data.models.blanktemplate.SlotTemplateRequest
 import io.ktor.http.*
 import io.ktor.server.request.receive
 import io.ktor.server.response.*
@@ -17,10 +18,24 @@ fun Route.blankTemplateRoutes() {
             val request = call.receive<AgentRequest>()
 
             val exampleTemplate = BlankTemplateRequest(
+                roundNumber = "1",
                 title = "Math Quiz",
-                answers = listOf(
-                    AnswerTemplateRequest(questionNumber = 1, answer = "Paris"),
-                    AnswerTemplateRequest(questionNumber = 2, answer = "Blue")
+                slotsAmount = 2,
+                slots = listOf(
+                    SlotTemplateRequest(
+                        slotNumber = 1,
+                        checkInstructions = null,
+                        answerOptions = listOf(
+                            AnswerTemplateRequest(questionNumber = 1, answer = "Paris", points = 1.0)
+                        )
+                    ),
+                    SlotTemplateRequest(
+                        slotNumber = 2,
+                        checkInstructions = null,
+                        answerOptions = listOf(
+                            AnswerTemplateRequest(questionNumber = 2, answer = "Blue", points = 1.0)
+                        )
+                    )
                 )
             )
 
@@ -28,7 +43,7 @@ fun Route.blankTemplateRoutes() {
                 prompt("blank-template-parser") {
                     system("""
                         You are a helpful assistant that parses user prompts into structured quiz blank templates.
-                        Extract the title and answers from the user's prompt.
+                        Define check instructions only if it is provided.
                     """.trimIndent())
                     user(request.prompt)
                 },
