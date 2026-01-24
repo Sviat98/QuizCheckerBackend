@@ -1,6 +1,8 @@
 package com.bashkevich.quizcheckerbackend.data.models.blanktemplate
 
 import ai.koog.agents.core.tools.annotations.LLMDescription
+import kotlinx.serialization.EncodeDefault
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -22,6 +24,7 @@ data class BlankTemplateRequest(
     val slots: List<SlotTemplateRequest>
 )
 
+@OptIn(ExperimentalSerializationApi::class)
 @Serializable
 @LLMDescription("A single line in a quiz blank")
 data class SlotTemplateRequest(
@@ -30,7 +33,8 @@ data class SlotTemplateRequest(
     val slotNumber: Int,
     @SerialName("check_instructions")
     @property:LLMDescription("Instructions for the LLM to determine whether to pass an answer or not")
-    val checkInstructions: String?,
+    @EncodeDefault(EncodeDefault.Mode.NEVER)
+    val checkInstructions: String? = null,
     @SerialName("answer_options")
     @property:LLMDescription("List of possible answer options for this slot")
     val answerOptions: List<AnswerTemplateRequest>
@@ -39,9 +43,6 @@ data class SlotTemplateRequest(
 @Serializable
 @LLMDescription("An answer option")
 data class AnswerTemplateRequest(
-    @SerialName("question_number")
-    @property:LLMDescription("The question number for this answer")
-    val questionNumber: Int,
     @SerialName("answer")
     @property:LLMDescription("The answer text for the question")
     val answer: String,

@@ -26,14 +26,14 @@ fun Route.blankTemplateRoutes() {
                         slotNumber = 1,
                         checkInstructions = null,
                         answerOptions = listOf(
-                            AnswerTemplateRequest(questionNumber = 1, answer = "Paris", points = 1.0)
+                            AnswerTemplateRequest(answer = "Paris", points = 1.0)
                         )
                     ),
                     SlotTemplateRequest(
                         slotNumber = 2,
                         checkInstructions = null,
                         answerOptions = listOf(
-                            AnswerTemplateRequest(questionNumber = 2, answer = "Blue", points = 1.0)
+                            AnswerTemplateRequest(answer = "Blue", points = 1.0)
                         )
                     )
                 )
