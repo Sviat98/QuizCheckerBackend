@@ -1,5 +1,9 @@
 package com.bashkevich.quizcheckerbackend.data
 
+import com.bashkevich.quizcheckerbackend.data.models.blanktemplate.AnswerTemplateTable
+import com.bashkevich.quizcheckerbackend.data.models.blanktemplate.BlankTemplateTable
+import com.bashkevich.quizcheckerbackend.data.models.blanktemplate.SlotAnswerTemplateTable
+import com.bashkevich.quizcheckerbackend.data.models.blanktemplate.SlotTemplateTable
 import com.bashkevich.quizcheckerbackend.data.models.user.UsersTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -33,7 +37,13 @@ object DatabaseFactory {
 
         // Create tables if they don't exist
         transaction(database) {
-            SchemaUtils.create(UsersTable)
+            SchemaUtils.create(
+                UsersTable,
+                BlankTemplateTable,
+                AnswerTemplateTable,
+                SlotTemplateTable,
+                SlotAnswerTemplateTable
+            )
         }
     }
 

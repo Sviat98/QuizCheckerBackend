@@ -18,23 +18,23 @@ fun Route.blankTemplateRoutes() {
             val request = call.receive<AgentRequest>()
 
             val exampleTemplate = BlankTemplateRequest(
-                roundNumber = "1",
+                roundNumber = 1,
                 title = "Math Quiz",
                 slotsAmount = 2,
+                answers = listOf(
+                    AnswerTemplateRequest(id = -1, answer = "Paris", points = 1.0),
+                    AnswerTemplateRequest(id = -2, answer = "Blue", points = 1.0)
+                ),
                 slots = listOf(
                     SlotTemplateRequest(
                         slotNumber = 1,
                         checkInstructions = null,
-                        answerOptions = listOf(
-                            AnswerTemplateRequest(answer = "Paris", points = 1.0)
-                        )
+                        answerOptions = listOf(-1)
                     ),
                     SlotTemplateRequest(
                         slotNumber = 2,
                         checkInstructions = null,
-                        answerOptions = listOf(
-                            AnswerTemplateRequest(answer = "Blue", points = 1.0)
-                        )
+                        answerOptions = listOf(-2)
                     )
                 )
             )
@@ -50,7 +50,11 @@ fun Route.blankTemplateRoutes() {
                 OpenAIModels.Chat.GPT4oMini,
                 examples = listOf(exampleTemplate)
             ).onSuccess { output ->
-                call.respond(HttpStatusCode.OK, output.data)
+
+                val blankTemplateRequest = output.data
+
+
+                call.respond(HttpStatusCode.OK, blankTemplateRequest)
             }.onFailure { error ->
                 call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Failed to process blank template: ${error.message}"))
             }
