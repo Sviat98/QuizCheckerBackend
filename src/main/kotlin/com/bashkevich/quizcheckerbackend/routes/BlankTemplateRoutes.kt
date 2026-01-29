@@ -11,9 +11,14 @@ import io.ktor.http.*
 import io.ktor.server.request.receive
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
+import com.bashkevich.quizcheckerbackend.services.blanktemplate.BlankTemplateService
 
 fun Route.blankTemplateRoutes() {
+    val blankTemplateService by inject<BlankTemplateService>()
+
     route("/ai/blank") {
+
         post {
             val request = call.receive<AgentRequest>()
 
@@ -50,11 +55,8 @@ fun Route.blankTemplateRoutes() {
                 OpenAIModels.Chat.GPT4oMini,
                 examples = listOf(exampleTemplate)
             ).onSuccess { output ->
-
-                val blankTemplateRequest = output.data
-
-
-                call.respond(HttpStatusCode.OK, blankTemplateRequest)
+                val blankTemplateDto = blankTemplateService.insertBlankTemplate(output.data)
+                call.respond(HttpStatusCode.OK, blankTemplateDto)
             }.onFailure { error ->
                 call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Failed to process blank template: ${error.message}"))
             }

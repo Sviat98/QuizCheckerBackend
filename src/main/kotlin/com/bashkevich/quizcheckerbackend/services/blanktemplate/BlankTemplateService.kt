@@ -1,12 +1,12 @@
 package com.bashkevich.quizcheckerbackend.services.blanktemplate
 
 import com.bashkevich.quizcheckerbackend.data.DatabaseFactory.dbQuery
-import com.bashkevich.quizcheckerbackend.data.models.blanktemplate.BlankTemplateRequest
+import com.bashkevich.quizcheckerbackend.data.models.blanktemplate.*
 import com.bashkevich.quizcheckerbackend.data.repositories.blanktemplate.BlankTemplateRepository
 
 class BlankTemplateService(private val repository: BlankTemplateRepository) {
 
-    suspend fun insertBlankTemplate(request: BlankTemplateRequest): Int = dbQuery {
+    suspend fun insertBlankTemplate(request: BlankTemplateRequest): BlankTemplateDto = dbQuery {
         val blankTemplateId = repository.insertBlankTemplate(
             roundNumber = request.roundNumber,
             title = request.title,
@@ -15,29 +15,54 @@ class BlankTemplateService(private val repository: BlankTemplateRepository) {
 
         val answerIdMapping = mutableMapOf<Int, Int>()
 
-        request.answers.forEach { answerRequest ->
+        val answerDtos = request.answers.map { answerRequest ->
             val newAnswerId = repository.insertAnswerTemplate(
                 blankTemplateId = blankTemplateId,
                 answer = answerRequest.answer,
                 points = answerRequest.points
             )
             answerIdMapping[answerRequest.id] = newAnswerId
+            AnswerTemplateDto(
+                id = newAnswerId,
+                answer = answerRequest.answer,
+                points = answerRequest.points
+            )
         }
 
-        request.slots.forEach { slotRequest ->
+        val slotDtos = request.slots.map { slotRequest ->
             val slotId = repository.insertSlotTemplate(
                 blankTemplateId = blankTemplateId,
                 slotNumber = slotRequest.slotNumber,
                 checkInstructions = slotRequest.checkInstructions
             )
-            slotRequest.answerOptions.forEach { oldAnswerId ->
+            val newAnswerIds = slotRequest.answerOptions.map { oldAnswerId ->
                 val newAnswerId = answerIdMapping[oldAnswerId]
                     ?: throw IllegalStateException("Answer with id $oldAnswerId not found in mapping")
                 repository.insertSlotAnswerMapping(slotId, newAnswerId)
+                newAnswerId
             }
+            val answersAmount = newAnswerIds.size
+            val answer = if (answersAmount == 1) {
+                answerDtos.first()
+            } else {
+                null
+            }
+            SlotTemplateDto(
+                id = slotId,
+                slotNumber = slotRequest.slotNumber,
+                checkInstructions = slotRequest.checkInstructions,
+                answersAmount = answersAmount,
+                answer = answer
+            )
         }
 
-        blankTemplateId
+        BlankTemplateDto(
+            id = blankTemplateId,
+            roundNumber = request.roundNumber,
+            title = request.title,
+            slotsAmount = request.slotsAmount,
+            slots = slotDtos
+        )
     }
 
     suspend fun getBlankTemplateById(id: Int): BlankTemplateRequest? = dbQuery {
