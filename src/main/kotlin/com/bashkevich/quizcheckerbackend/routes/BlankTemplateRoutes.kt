@@ -28,7 +28,8 @@ fun Route.blankTemplateRoutes() {
                 slotsAmount = 2,
                 answers = listOf(
                     AnswerTemplateRequest(id = -1, answer = "Paris", points = 1.0),
-                    AnswerTemplateRequest(id = -2, answer = "Blue", points = 1.0)
+                    AnswerTemplateRequest(id = -2, answer = "Blue", points = 1.0),
+                    AnswerTemplateRequest(id = -3, answer = "Paris", points = 0.5),
                 ),
                 slots = listOf(
                     SlotTemplateRequest(
@@ -49,12 +50,14 @@ fun Route.blankTemplateRoutes() {
                     system("""
                         You are a helpful assistant that parses user prompts into structured quiz blank templates.
                         Define check instructions only if it is provided.
+                        Important: if there are different amount of points for the same answer, split them. 
                     """.trimIndent())
                     user(request.prompt)
                 },
                 OpenAIModels.Chat.GPT4oMini,
                 examples = listOf(exampleTemplate)
             ).onSuccess { output ->
+                println(output.data)
                 val blankTemplateDto = blankTemplateService.insertBlankTemplate(output.data)
                 call.respond(HttpStatusCode.OK, blankTemplateDto)
             }.onFailure { error ->

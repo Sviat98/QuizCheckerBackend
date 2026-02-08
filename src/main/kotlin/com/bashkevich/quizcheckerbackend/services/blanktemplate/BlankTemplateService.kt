@@ -43,7 +43,7 @@ class BlankTemplateService(private val repository: BlankTemplateRepository) {
             }
             val answersAmount = newAnswerIds.size
             val answer = if (answersAmount == 1) {
-                answerDtos.first()
+                answerDtos.first { it.id == newAnswerIds.first() }
             } else {
                 null
             }
