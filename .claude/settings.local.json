@@ -16,5 +16,6 @@
   "enabledMcpjsonServers": [
     "deepwiki",
     "maven-deps-server"
-  ]
+  ],
+  "enableAllProjectMcpServers": true
 }

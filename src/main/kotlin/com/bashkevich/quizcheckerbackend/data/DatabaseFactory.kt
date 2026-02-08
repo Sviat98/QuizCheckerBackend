@@ -1,5 +1,7 @@
 package com.bashkevich.quizcheckerbackend.data
 
+import com.bashkevich.quizcheckerbackend.data.models.blank.BlankTable
+import com.bashkevich.quizcheckerbackend.data.models.blank.SlotTable
 import com.bashkevich.quizcheckerbackend.data.models.blanktemplate.AnswerTemplateTable
 import com.bashkevich.quizcheckerbackend.data.models.blanktemplate.BlankTemplateTable
 import com.bashkevich.quizcheckerbackend.data.models.blanktemplate.SlotAnswerTemplateTable
@@ -42,7 +44,9 @@ object DatabaseFactory {
                 BlankTemplateTable,
                 AnswerTemplateTable,
                 SlotTemplateTable,
-                SlotAnswerTemplateTable
+                SlotAnswerTemplateTable,
+                BlankTable,
+                SlotTable
             )
         }
     }

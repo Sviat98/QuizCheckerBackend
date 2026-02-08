@@ -31,7 +31,7 @@ fun Route.checkAnswerRoutes() {
                         Consider partial correctness, synonyms, and minor variations in spelling or phrasing.
                         Return a probability as a number from 0 to 1, where 0 is completely incorrect and 1 is  absolutely right answer.
                     """.trimIndent())
-                    user("How is $givenAnswer correct to a $rightAnswer ? $orderedPrompt")
+                    user("How is $givenAnswer correct to a $rightAnswer ? $unorderedPrompt")
                 },
                 OpenAIModels.Chat.GPT4oMini
             ).onSuccess { output ->
