@@ -65,11 +65,11 @@ class BlankTemplateService(private val repository: BlankTemplateRepository) {
         )
     }
 
-    suspend fun getBlankTemplateById(id: Int): BlankTemplateRequest? = dbQuery {
+    suspend fun getBlankTemplateById(id: Int): BlankTemplateDto? = dbQuery {
         repository.getBlankTemplateById(id)
     }
 
-    suspend fun getAllBlankTemplates(): List<BlankTemplateRequest> = dbQuery {
+    suspend fun getAllBlankTemplates(): List<BlankTemplateDto> = dbQuery {
         repository.getAllBlankTemplates()
     }
 }

@@ -1,5 +1,6 @@
 package com.bashkevich.quizcheckerbackend.plugins
 
+import com.bashkevich.quizcheckerbackend.routes.blankRoutes
 import com.bashkevich.quizcheckerbackend.routes.blankTemplateRoutes
 import com.bashkevich.quizcheckerbackend.routes.checkAnswerRoutes
 import com.bashkevich.quizcheckerbackend.routes.healthRoutes
@@ -14,6 +15,7 @@ fun Application.configureRouting() {
         userRoutes()
         koogRoutes()
         blankTemplateRoutes()
+        blankRoutes()
         checkAnswerRoutes()
     }
 }

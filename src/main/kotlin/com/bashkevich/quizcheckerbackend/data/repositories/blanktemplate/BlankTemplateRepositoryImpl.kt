@@ -17,7 +17,7 @@ class BlankTemplateRepositoryImpl : BlankTemplateRepository {
         }.value
     }
 
-    override fun getBlankTemplateById(id: Int): BlankTemplateRequest? {
+    override fun getBlankTemplateById(id: Int): BlankTemplateDto? {
         val row = BlankTemplateTable.selectAll()
             .where { BlankTemplateTable.id eq id }
             .singleOrNull() ?: return null
@@ -25,39 +25,53 @@ class BlankTemplateRepositoryImpl : BlankTemplateRepository {
         val answers = getAnswerTemplatesByBlankTemplateId(id)
         val slots = getSlotTemplatesByBlankTemplateId(id)
 
-        return BlankTemplateRequest(
+        return BlankTemplateDto(
+            id = row[BlankTemplateTable.id].value,
             roundNumber = row[BlankTemplateTable.roundNumber],
             title = row[BlankTemplateTable.title],
             slotsAmount = row[BlankTemplateTable.slotsAmount],
-            answers = answers.map { it.toAnswerTemplateRequest() },
             slots = slots.map { slot ->
-                val answerOptions = getAnswerIdsBySlotId(slot.id)
-                SlotTemplateRequest(
+                val answerIds = getAnswerIdsBySlotId(slot.id)
+                val answer = if (answerIds.size == 1) {
+                    answers.first { it.id == answerIds.first() }.toAnswerTemplateDto()
+                } else {
+                    null
+                }
+                SlotTemplateDto(
+                    id = slot.id,
                     slotNumber = slot.slotNumber,
                     checkInstructions = slot.checkInstructions,
-                    answerOptions = answerOptions
+                    answersAmount = answerIds.size,
+                    answer = answer
                 )
             }
         )
     }
 
-    override fun getAllBlankTemplates(): List<BlankTemplateRequest> {
+    override fun getAllBlankTemplates(): List<BlankTemplateDto> {
         return BlankTemplateTable.selectAll().map { row ->
             val id = row[BlankTemplateTable.id].value
             val answers = getAnswerTemplatesByBlankTemplateId(id)
             val slots = getSlotTemplatesByBlankTemplateId(id)
 
-            BlankTemplateRequest(
+            BlankTemplateDto(
+                id = id,
                 roundNumber = row[BlankTemplateTable.roundNumber],
                 title = row[BlankTemplateTable.title],
                 slotsAmount = row[BlankTemplateTable.slotsAmount],
-                answers = answers.map { it.toAnswerTemplateRequest() },
                 slots = slots.map { slot ->
-                    val answerOptions = getAnswerIdsBySlotId(slot.id)
-                    SlotTemplateRequest(
+                    val answerIds = getAnswerIdsBySlotId(slot.id)
+                    val answer = if (answerIds.size == 1) {
+                        answers.first { it.id == answerIds.first() }.toAnswerTemplateDto()
+                    } else {
+                        null
+                    }
+                    SlotTemplateDto(
+                        id = slot.id,
                         slotNumber = slot.slotNumber,
                         checkInstructions = slot.checkInstructions,
-                        answerOptions = answerOptions
+                        answersAmount = answerIds.size,
+                        answer = answer
                     )
                 }
             )
@@ -123,6 +137,14 @@ class BlankTemplateRepositoryImpl : BlankTemplateRepository {
 
     private fun AnswerTemplateData.toAnswerTemplateRequest(): AnswerTemplateRequest {
         return AnswerTemplateRequest(
+            id = this.id,
+            answer = this.answer,
+            points = this.points
+        )
+    }
+
+    private fun AnswerTemplateData.toAnswerTemplateDto(): AnswerTemplateDto {
+        return AnswerTemplateDto(
             id = this.id,
             answer = this.answer,
             points = this.points

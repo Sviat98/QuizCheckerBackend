@@ -1,11 +1,11 @@
 package com.bashkevich.quizcheckerbackend.data.repositories.blanktemplate
 
-import com.bashkevich.quizcheckerbackend.data.models.blanktemplate.BlankTemplateRequest
+import com.bashkevich.quizcheckerbackend.data.models.blanktemplate.BlankTemplateDto
 
 interface BlankTemplateRepository {
     fun insertBlankTemplate(roundNumber: Int, title: String, slotsAmount: Int): Int
-    fun getBlankTemplateById(id: Int): BlankTemplateRequest?
-    fun getAllBlankTemplates(): List<BlankTemplateRequest>
+    fun getBlankTemplateById(id: Int): BlankTemplateDto?
+    fun getAllBlankTemplates(): List<BlankTemplateDto>
 
     fun insertAnswerTemplate(blankTemplateId: Int, answer: String, points: Double): Int
     fun getAnswerTemplatesByBlankTemplateId(blankTemplateId: Int): List<AnswerTemplateData>
