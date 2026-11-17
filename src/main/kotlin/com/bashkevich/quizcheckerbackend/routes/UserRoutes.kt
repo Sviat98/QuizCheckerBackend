@@ -1,7 +1,7 @@
 package com.bashkevich.quizcheckerbackend.routes
 
-import com.bashkevich.quizcheckerbackend.data.models.CreateUserRequest
-import com.bashkevich.quizcheckerbackend.data.models.UpdateUserRequest
+import com.bashkevich.quizcheckerbackend.data.models.user.CreateUserRequest
+import com.bashkevich.quizcheckerbackend.data.models.user.UpdateUserRequest
 import com.bashkevich.quizcheckerbackend.services.UserService
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -10,10 +10,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
 
-/**
- * User-related API routes.
- * Provides CRUD operations for User entities.
- */
 fun Route.userRoutes() {
     val userService by inject<UserService>()
 
@@ -26,11 +22,7 @@ fun Route.userRoutes() {
 
         // GET /api/users/{id} - Get user by ID
         get("/{id}") {
-            val id = call.parameters["id"]?.toIntOrNull()
-            if (id == null) {
-                call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Invalid user ID"))
-                return@get
-            }
+            val id = call.parameters["id"]?.toIntOrNull() ?: 0
 
             val user = userService.getUserById(id)
             if (user == null) {
@@ -55,11 +47,7 @@ fun Route.userRoutes() {
 
         // PUT /api/users/{id} - Update user
         put("/{id}") {
-            val id = call.parameters["id"]?.toIntOrNull()
-            if (id == null) {
-                call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Invalid user ID"))
-                return@put
-            }
+            val id = call.parameters["id"]?.toIntOrNull() ?: 0
 
             try {
                 val request = call.receive<UpdateUserRequest>()
@@ -77,11 +65,7 @@ fun Route.userRoutes() {
 
         // DELETE /api/users/{id} - Delete user
         delete("/{id}") {
-            val id = call.parameters["id"]?.toIntOrNull()
-            if (id == null) {
-                call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Invalid user ID"))
-                return@delete
-            }
+            val id = call.parameters["id"]?.toIntOrNull() ?: 0
 
             val deleted = userService.deleteUser(id)
             if (deleted) {

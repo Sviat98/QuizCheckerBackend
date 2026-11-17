@@ -1,15 +1,11 @@
 package com.bashkevich.quizcheckerbackend.plugins
 
 import io.ktor.server.application.*
+import io.ktor.server.plugins.calllogging.CallLogging
+import org.slf4j.event.Level
 
-/**
- * Configures request/response logging for monitoring.
- *
- * Note: CallLogging plugin has import issues with current Ktor version.
- * Logging is still available through Logback (configured in logback.xml).
- */
 fun Application.configureMonitoring() {
-    // Basic monitoring placeholder
-    // You can add custom logging interceptors here if needed
-    log.info("Monitoring configuration loaded")
+    install(CallLogging){
+        level = Level.INFO
+    }
 }
